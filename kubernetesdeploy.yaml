@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bankapp-demo-deploy
+  labels:
+    app: bankapp-demo-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bankapp-demo-app
+  template:
+    metadata:
+      labels:
+        app: bankapp-demo-app
+    spec:
+      containers:
+      - name: bankapp-demo-container
+        image: bhanusivarjun/bankapp-demo-app
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bankapp-demo-np-service
+  labels:
+    app: bankapp-demo-app
+spec:
+  selector:
+    app: bankapp-demo-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31002    
+    port: 8082
+    targetPort: 8082
